@@ -21,5 +21,11 @@ public class Point {
     {
         return y;
     }
+
+    public void draw(Graphics g)
+    {
+        g.fillOval(x,y,5,5);
+        g.setColor(Color.black);
+    }
     
 }

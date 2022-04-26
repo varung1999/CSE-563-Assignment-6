@@ -17,7 +17,20 @@ public class WorkSpacePanel extends JPanel implements MouseListener, MouseMotion
     @Override
     public void mousePressed(MouseEvent e) {
         // TODO Auto-generated method stub
-    }    
+        workSpace.addPoint(new Point(e.getX(), e.getY()));
+        repaint(); 
+    }
+
+    public void paintComponent(Graphics g)
+    {
+        super.paintComponent(g);
+        Graphics2D graphics2 = (Graphics2D) g;
+        for(Point p: workSpace.pointList)
+        {
+            p.draw(graphics2);
+        }
+    }
+    
 
     @Override
     public void mouseDragged(MouseEvent e) {

@@ -56,7 +56,7 @@ public class MainFrame extends JFrame {
             if(selectedFile!= null)
             {
                 try{ // send the selected file to required place.
-                
+
                 }
                 catch(IOException e)
                 {
@@ -81,6 +81,14 @@ public class MainFrame extends JFrame {
     }
 
    
+
+    //private method for File saving
+    private File displayFileSaveDialog() {
+        JFileChooser jFileChooser = new JFileChooser();
+        if (jFileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION)
+            return jFileChooser.getSelectedFile();
+        else return null;
+    }
 
     //private method for random dot generator to generate random dots.
 

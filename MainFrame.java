@@ -56,6 +56,7 @@ public class MainFrame extends JFrame {
             if(selectedFile!= null)
             {
                 try{ // send the selected file to required place.
+                    workSpacePanel.save(selectedFile);
 
                 }
                 catch(IOException e)
@@ -91,9 +92,6 @@ public class MainFrame extends JFrame {
     }
 
     //private method for random dot generator to generate random dots.
-
-    
-
 
     //main method
     public static void main(String args[])

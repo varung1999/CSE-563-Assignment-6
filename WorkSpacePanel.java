@@ -3,6 +3,8 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.io.*;
+
 
 public class WorkSpacePanel extends JPanel implements MouseListener, MouseMotionListener {
 
@@ -16,7 +18,6 @@ public class WorkSpacePanel extends JPanel implements MouseListener, MouseMotion
 
     @Override
     public void mousePressed(MouseEvent e) {
-        // TODO Auto-generated method stub
         workSpace.addPoint(new Point(e.getX(), e.getY()));
         repaint(); 
     }
@@ -30,7 +31,11 @@ public class WorkSpacePanel extends JPanel implements MouseListener, MouseMotion
             p.draw(graphics2);
         }
     }
-    
+
+    public void repaintLoadedPoints()
+    {
+        repaint();
+    }
 
     @Override
     public void mouseDragged(MouseEvent e) {
@@ -69,4 +74,17 @@ public class WorkSpacePanel extends JPanel implements MouseListener, MouseMotion
         
     }
 
+
+    
+    
+    public void save(File file) throws IOException{
+
+        BufferedWriter writer = new BufferedWriter(new FileWriter(file.getAbsolutePath()));
+        for(Point p: workSpace.pointList)
+        {
+            writer.write(String.format("X -" +p.getX() +"\tY -"+p.getY() +"\n"));
+        }
+        writer.close();
+    }
+    
 }

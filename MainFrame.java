@@ -63,6 +63,8 @@ public class MainFrame extends JFrame {
             File selectedFile = displayFileSelectionDialog();
             if (selectedFile != null) {
                 try { // send the selected file to the required place.
+                    workSpacePanel.load(selectedFile);
+
                 }
                 catch (IOException e) {
                     String msg = String.format("Failed To Load Data From File\nException: %s", e);

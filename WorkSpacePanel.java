@@ -74,8 +74,32 @@ public class WorkSpacePanel extends JPanel implements MouseListener, MouseMotion
         
     }
 
+    public void load(File file) throws IOException{
 
+        workSpace.pointList.clear();
+        String text = readTextFile(file);
+        String[] line = text.split("\n");
+
+        for(String lines: line)
+        {
+            String[] temp = lines.split(" ");
+            Point tempPoint = new Point(Integer.parseInt(temp[0]), Integer.parseInt(temp[1]));
+            workSpace.pointList.add(tempPoint);
+        }
+        repaint();
+        
+    }
     
+    private String readTextFile(File file) throws IOException {
+        String lineText;
+        StringBuilder fileTextStringBuilder = new StringBuilder();
+        BufferedReader br = new BufferedReader(new FileReader(file));
+        while ((lineText = br.readLine()) != null) {
+            fileTextStringBuilder.append(lineText).append("\n");
+        }
+        br.close();
+        return fileTextStringBuilder.toString();
+    }
     
     public void save(File file) throws IOException{
 

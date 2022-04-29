@@ -24,30 +24,38 @@ public class MainFrame extends JFrame {
 
         JMenuBar menuBar = new JMenuBar();
         JMenu FileMenu = new JMenu("File");
-
+        JMenu randomGenerator = new JMenu("Random Generator");
+        
         
 
         JLabel LogLabel = new JLabel("",JLabel.CENTER);
 
+        JMenuItem ClearCanvasItem = new JMenuItem("Clear Canvas");
         JMenuItem SaveMenuItem = new JMenuItem("Save File");
         JMenuItem LoadMenuItem = new JMenuItem("Load File");
-        JMenuItem ClearCanvasItem = new JMenuItem("Clear Canvas");
+        JMenuItem randomItem = new JMenuItem("Give Input");
+
         
-        //adding menuitems to menu         
-		FileMenu.add(SaveMenuItem);
+        //adding menuitems to menu 
+        FileMenu.add(ClearCanvasItem);
+        FileMenu.add(SaveMenuItem);
         FileMenu.add(LoadMenuItem);
-		FileMenu.add(ClearCanvasItem);
+        randomGenerator.add(randomItem);
 
         //adding menu to menu bar
         menuBar.add(FileMenu);
-	
-		ClearCanvasItem.addActionListener(ev->{
+        menuBar.add(randomGenerator);
+
+
+        //action listener to Clear Canvas
+        ClearCanvasItem.addActionListener(ev->{
 
             workSpace.pointList.clear();
             workSpacePanel.repaint();
 
         });
-		
+        
+
         //action listener to Save Menu
         SaveMenuItem.addActionListener(ev->{
             File selectedFile = displayFileSaveDialog();
@@ -82,6 +90,20 @@ public class MainFrame extends JFrame {
             }
             LogLabel.setText("Load Option from File menu is selected");
         });
+
+        //action listener to random generator
+        randomItem.addActionListener(ev->{
+
+            //JOption Pane has output of string format
+        temp = JOptionPane.showInputDialog(this, "Enter the number of random dots");
+
+        //converting temp to int data type
+        int numberOfRandomDots = Integer.valueOf(temp);
+
+        randomGeneratorHelper(numberOfRandomDots );
+
+        });
+
         
         //adding to the frame
         add(menuBar,BorderLayout.NORTH);
@@ -105,6 +127,27 @@ public class MainFrame extends JFrame {
             return jFileChooser.getSelectedFile();
         else return null;
     }
+
+    //private method for random dot generator to generate random dots.
+
+    private void randomGeneratorHelper(int numberOfRandomDots)
+    {
+       workSpace.pointList.clear();
+        
+        for(int i =0;i<numberOfRandomDots;i++)
+        {
+            int x = (int) (Math.random()*599);
+            int y = (int) (Math.random()*499);
+
+            Point p = new Point(x, y);
+            workSpace.pointList.add(p);
+        }
+        for(Point p:workSpace.pointList){
+
+        workSpacePanel.repaintLoadedPoints();
+        }
+    }
+
 
     //main method
     public static void main(String args[])

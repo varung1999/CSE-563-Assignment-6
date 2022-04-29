@@ -99,7 +99,9 @@ public class MainFrame extends JFrame {
 
         //converting temp to int data type
         int numberOfRandomDots = Integer.valueOf(temp);
-		//Here make call to random point generator
+
+        randomGeneratorHelper(numberOfRandomDots );
+
         });
 
         
@@ -128,7 +130,24 @@ public class MainFrame extends JFrame {
 
     //private method for random dot generator to generate random dots.
 
-    
+    private void randomGeneratorHelper(int numberOfRandomDots)
+    {
+       workSpace.pointList.clear();
+        
+        for(int i =0;i<numberOfRandomDots;i++)
+        {
+            int x = (int) (Math.random()*599);
+            int y = (int) (Math.random()*499);
+
+            Point p = new Point(x, y);
+            workSpace.pointList.add(p);
+        }
+        for(Point p:workSpace.pointList){
+
+        workSpacePanel.repaintLoadedPoints();
+        }
+    }
+
 
     //main method
     public static void main(String args[])

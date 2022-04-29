@@ -91,6 +91,17 @@ public class MainFrame extends JFrame {
             LogLabel.setText("Load Option from File menu is selected");
         });
 
+        //action listener to random generator
+        randomItem.addActionListener(ev->{
+
+            //JOption Pane has output of string format
+        temp = JOptionPane.showInputDialog(this, "Enter the number of random dots");
+
+        //converting temp to int data type
+        int numberOfRandomDots = Integer.valueOf(temp);
+		//Here make call to random point generator
+        });
+
         
         //adding to the frame
         add(menuBar,BorderLayout.NORTH);

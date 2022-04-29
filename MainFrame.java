@@ -57,12 +57,35 @@ public class MainFrame extends JFrame {
             }
             LogLabel.setText("Save option from File menu is clicked");
         });
+
+        //action listener to Load Menu
+        LoadMenuItem.addActionListener(ev->{
+            File selectedFile = displayFileSelectionDialog();
+            if (selectedFile != null) {
+                try { // send the selected file to the required place.
+                }
+                catch (IOException e) {
+                    String msg = String.format("Failed To Load Data From File\nException: %s", e);
+                    JOptionPane.showMessageDialog(this, msg);
+                }
+               
+            }
+            LogLabel.setText("Load Option from File menu is selected");
+        });
         
         //adding to the frame
         add(menuBar,BorderLayout.NORTH);
         //adding log label to the frame
         add(LogLabel,BorderLayout.PAGE_END);
         
+    }
+
+    //private method for file selection
+    private File displayFileSelectionDialog() {
+        JFileChooser jFileChooser = new JFileChooser();
+        if (jFileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
+            return jFileChooser.getSelectedFile();
+        else return null;
     }
 
     //private method for File saving

@@ -31,15 +31,23 @@ public class MainFrame extends JFrame {
 
         JMenuItem SaveMenuItem = new JMenuItem("Save File");
         JMenuItem LoadMenuItem = new JMenuItem("Load File");
-
+        JMenuItem ClearCanvasItem = new JMenuItem("Clear Canvas");
         
-        //adding menuitems to menu 
-        FileMenu.add(SaveMenuItem);
+        //adding menuitems to menu         
+		FileMenu.add(SaveMenuItem);
         FileMenu.add(LoadMenuItem);
+		FileMenu.add(ClearCanvasItem);
 
         //adding menu to menu bar
         menuBar.add(FileMenu);
+	
+		ClearCanvasItem.addActionListener(ev->{
 
+            workSpace.pointList.clear();
+            workSpacePanel.repaint();
+
+        });
+		
         //action listener to Save Menu
         SaveMenuItem.addActionListener(ev->{
             File selectedFile = displayFileSaveDialog();

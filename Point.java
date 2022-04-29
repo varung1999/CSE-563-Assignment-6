@@ -23,7 +23,9 @@ public class Point {
 
     public void draw(Graphics g)
     {
-        g.drawOval(x,y,8,8);
+    	int x1=x-4;
+    	int y1=y-4;
+        g.fillOval(x1,y1,8,8);
         g.setColor(Color.black);
     }
     

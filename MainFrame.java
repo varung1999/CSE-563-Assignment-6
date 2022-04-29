@@ -7,10 +7,8 @@ public class MainFrame extends JFrame {
 
     private static final int DEFAULT_WINDOW_HEIGHT = 500;
     private static final int DEFAULT_WINDOW_WIDTH = 600;
-    public static String temp;
     WorkSpace workSpace;
     WorkSpacePanel workSpacePanel;
-    
     
     public MainFrame(){
         super();// set title over here
@@ -24,9 +22,8 @@ public class MainFrame extends JFrame {
 
         JMenuBar menuBar = new JMenuBar();
         JMenu FileMenu = new JMenu("File");
+        JMenu RunMenu = new JMenu("Run");
         JMenu randomGenerator = new JMenu("Random Generator");
-        
-        
 
         JLabel LogLabel = new JLabel("",JLabel.CENTER);
 
@@ -34,15 +31,17 @@ public class MainFrame extends JFrame {
         JMenuItem SaveMenuItem = new JMenuItem("Save File");
         JMenuItem LoadMenuItem = new JMenuItem("Load File");
         JMenuItem randomItem = new JMenuItem("Give Input");
-
+        JMenuItem runnerItem = new JMenuItem("Runner");
         
         //adding menuitems to menu 
         FileMenu.add(ClearCanvasItem);
         FileMenu.add(SaveMenuItem);
         FileMenu.add(LoadMenuItem);
         randomGenerator.add(randomItem);
+        RunMenu.add(runnerItem);
 
         //adding menu to menu bar
+        menuBar.add(RunMenu);
         menuBar.add(FileMenu);
         menuBar.add(randomGenerator);
 
@@ -95,13 +94,18 @@ public class MainFrame extends JFrame {
         randomItem.addActionListener(ev->{
 
             //JOption Pane has output of string format
-        temp = JOptionPane.showInputDialog(this, "Enter the number of random dots");
+        String temp = JOptionPane.showInputDialog(this, "Enter the number of random dots");
 
         //converting temp to int data type
         int numberOfRandomDots = Integer.valueOf(temp);
 
-        randomGeneratorHelper(numberOfRandomDots );
+        randomGeneratorHelper(numberOfRandomDots);
 
+        });
+        
+        
+        runnerItem.addActionListener(ev->{
+        	workSpacePanel.Clustering();
         });
 
         
@@ -109,7 +113,6 @@ public class MainFrame extends JFrame {
         add(menuBar,BorderLayout.NORTH);
         //adding log label to the frame
         add(LogLabel,BorderLayout.PAGE_END);
-        
     }
 
     //private method for file selection
@@ -144,7 +147,7 @@ public class MainFrame extends JFrame {
         }
         for(Point p:workSpace.pointList){
 
-        workSpacePanel.repaintLoadedPoints();
+        	workSpacePanel.repaintLoadedPoints();
         }
     }
 

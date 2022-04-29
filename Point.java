@@ -1,6 +1,5 @@
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 
 public class Point {
 
@@ -24,7 +23,7 @@ public class Point {
 
     public void draw(Graphics g)
     {
-        g.fillOval(x,y,5,5);
+        g.drawOval(x,y,8,8);
         g.setColor(Color.black);
     }
     

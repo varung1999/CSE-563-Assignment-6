@@ -31,7 +31,7 @@ public class MainFrame extends JFrame {
         JMenuItem SaveMenuItem = new JMenuItem("Save File");
         JMenuItem LoadMenuItem = new JMenuItem("Load File");
         JMenuItem randomItem = new JMenuItem("Give Input");
-        JMenuItem runnerItem = new JMenuItem("Runner");
+        JMenuItem runnerItem = new JMenuItem("Run with cutom input");
         
         //adding menuitems to menu 
         FileMenu.add(ClearCanvasItem);
@@ -41,15 +41,16 @@ public class MainFrame extends JFrame {
         RunMenu.add(runnerItem);
 
         //adding menu to menu bar
-        menuBar.add(RunMenu);
         menuBar.add(FileMenu);
         menuBar.add(randomGenerator);
+        menuBar.add(RunMenu);
 
 
         //action listener to Clear Canvas
         ClearCanvasItem.addActionListener(ev->{
 
             workSpace.pointList.clear();
+            workSpace.lineList.clear();
             workSpacePanel.repaint();
 
         });
@@ -92,7 +93,7 @@ public class MainFrame extends JFrame {
 
         //action listener to random generator
         randomItem.addActionListener(ev->{
-
+        	
             //JOption Pane has output of string format
         String temp = JOptionPane.showInputDialog(this, "Enter the number of random dots");
 
@@ -105,7 +106,9 @@ public class MainFrame extends JFrame {
         
         
         runnerItem.addActionListener(ev->{
-        	workSpacePanel.Clustering();
+        	String euclidDist = JOptionPane.showInputDialog(this, "Enter cluster euclidian  distance parameter value");
+        	workSpace.lineList.clear();
+        	workSpacePanel.Clustering(Integer.parseInt(euclidDist));
         });
 
         

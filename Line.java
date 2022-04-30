@@ -19,13 +19,6 @@ public class Line {
     public void draw(Graphics g) {
     	g.setColor(lineColor);
       g.drawLine(x1, y1, x2, y2);
-		try {
-			TimeUnit.SECONDS.sleep(1);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
   	 }
     
 }

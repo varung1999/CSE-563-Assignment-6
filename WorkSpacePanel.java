@@ -30,7 +30,6 @@ public class WorkSpacePanel extends JPanel implements MouseListener, MouseMotion
         Graphics2D graphics2 = (Graphics2D) g;
         for(Point p: workSpace.pointList)
         {
-        	
             p.draw(graphics2);
         }
         System.out.println("Inside repaint component \n");
@@ -83,21 +82,22 @@ public class WorkSpacePanel extends JPanel implements MouseListener, MouseMotion
     }
     
     
-    public void setLine(int ind1,int ind2,Color color) {
-    	int x1=workSpace.pointList.get(ind1).x;
-    	int y1=workSpace.pointList.get(ind1).y;
-    	int x2=workSpace.pointList.get(ind2).x;
-    	int y2=workSpace.pointList.get(ind2).y;
+    public void setLine(Point ind1,Point ind2, Color color) {
+    	int x1=ind1.x;
+    	int y1=ind1.y;
+    	int x2=ind2.x;
+    	int y2=ind2.y;
+    	
     	
     	workSpace.lineList.add(new Line(x1,y1,x2,y2,color));
     }
     
     
-    public double euclideanDist(int ind1,int ind2) {
-    	int x1=workSpace.pointList.get(ind1).x;
-    	int y1=workSpace.pointList.get(ind1).y;
-    	int x2=workSpace.pointList.get(ind2).x;
-    	int y2=workSpace.pointList.get(ind2).y;
+    public double euclideanDist(Point ind1,Point ind2) {
+    	int x1=ind1.x;
+    	int y1=ind1.y;
+    	int x2=ind2.x;
+    	int y2=ind2.y;
     	
     	double ac = Math.abs(y2 - y1);
         double cb = Math.abs(x2 - x1);
@@ -105,63 +105,44 @@ public class WorkSpacePanel extends JPanel implements MouseListener, MouseMotion
         return Math.hypot(ac, cb);
     }
     
-    public void Clustering() {
+    public void Clustering(int maxEuclidDist) {
     	
-    	ArrayList<Boolean> visited=new ArrayList<>();
-    	int maxPoints=workSpace.pointList.size();
-    	int visitedPoints=0;
-    	int givenDist = 100;
-    	for(int i=0;i<maxPoints;i++) {
-    		visited.add(false);
-    	}
-    	while(visitedPoints<maxPoints) {
-    		int i=0;
-    		Random rnd = new Random();
-    		
-    		Color randColor = new Color(rnd.nextInt(256),rnd.nextInt(256),rnd.nextInt(256));
-    		
-    		while(visited.get(i)) {
-    			i++;
-    		}
-    		
-    		Queue<Integer> toVisit=new LinkedList<>();
-    		toVisit.offer(i);
-    		try {
-    			while(toVisit.size()>0) {
-	    			int index = toVisit.poll();
-	    			
-	        		visited.set(index, true);
-	        		visitedPoints++;
-	        		
-	        		
-	    			for(int j=0;j<maxPoints;j++) {
-	    				if(visited.get(j))
-	    					continue;
-	    				else if(euclideanDist(index,j)<=givenDist) {
-	    					setLine(i,j,randColor);
-	    					repaint();
-	    					toVisit.offer(j);
-	    				}
-	    			}
-    			}
-				//TimeUnit.SECONDS.sleep(1);
-			} catch (Exception e) {
-				System.out.println("ERROR HERE");
-				e.printStackTrace();
-			}
-    	}
-    		JOptionPane.showMessageDialog(null, "RUN COMPLETED", "Messageeeer", JOptionPane.INFORMATION_MESSAGE);
-    	
-    	
-    	System.out.println("POINTS");
-    	for(Point p:workSpace.pointList) {
-    		System.out.println(p.x+","+p.y);
-    	}
-    	System.out.println("LINES");
-    	for(Line l:workSpace.lineList) {
-    		System.out.println(l.x1+","+l.y1+"--"+l.x2+","+l.y2);
-    	}
-    	
+    	Thread thread = new Thread(){
+    	    public void run(){
+    	    	int numOfPoints = workSpace.pointList.size();
+    	    	HashSet<Point> hs = new HashSet<>();
+    	    	Queue<Point> queue = new LinkedList<>();
+    	    	for(int i=0;i<numOfPoints;i++)
+    	    		hs.add(workSpace.pointList.get(i));
+    	    	Random rnd = new Random();
+    	    	while(!hs.isEmpty()) {
+    	    		Point p = hs.iterator().next();
+    	    		
+    	    		Color randColor = new Color(rnd.nextInt(256),rnd.nextInt(256),rnd.nextInt(256));
+    	    		hs.remove(p);
+    	    		queue.add(p);
+    	    		while(!queue.isEmpty()) {
+    	    			p = queue.poll();
+	    	    		for(int i=0;i<numOfPoints;i++) {
+	    	    			Point q = workSpace.pointList.get(i);
+	    	    			if(hs.contains(q) && euclideanDist(q,p)<=maxEuclidDist) {
+	    	    				queue.add(q);
+	    	    				hs.remove(q);
+	    	    				setLine(p,q,randColor);
+	    	    				repaint();
+	    	    				}
+	    	    			}			
+    	    		}
+    	    		try {
+    	    		    Thread.sleep(1L * 1000L);
+    	    		} catch (InterruptedException e) {
+    	    		    e.printStackTrace();
+    	    		}
+    	    	}
+    	    	JOptionPane.showMessageDialog(null, "RUN COMPLETED", "Message", JOptionPane.INFORMATION_MESSAGE);   
+    	    }
+    	  };
+    	  thread.start();
     }
     
     @Override

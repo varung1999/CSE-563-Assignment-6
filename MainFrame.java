@@ -144,8 +144,6 @@ public class MainFrame extends JFrame {
      */
     private void randomGeneratorHelper(int numberOfRandomDots)
     {
-       workSpace.pointList.clear();
-        
         for(int i =0;i<numberOfRandomDots;i++)
         {
             int x = (int) (Math.random()*599);

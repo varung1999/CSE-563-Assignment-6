@@ -137,7 +137,6 @@ public class MainFrame extends JFrame {
         else return null;
     }
 
-    //private method for random dot generator to generate random dots.
     /**
      * The method randomGeneratorHelper is used to generate random points on the canvas(GUI).
      *

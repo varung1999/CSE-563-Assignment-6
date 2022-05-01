@@ -7,6 +7,15 @@ import java.io.*;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * The class WorkSpacePanel is where all the mail logic is written such the clustering algorithm, load and save
+ * functionalities, and the calculation of Eucledian distance between two points. This class extends the JPanel and
+ * implements both MouseListener and MouseMotionListener
+ * @author Pragada Anurag - 1223151007
+ * @author Gollapalli Varun - 1223130805
+ * @author Amulya Bodla - 1219477220
+ * @author Piyush Mudireddy - 1219456537
+ */
 
 public class WorkSpacePanel extends JPanel implements MouseListener, MouseMotionListener {
 
@@ -24,6 +33,11 @@ public class WorkSpacePanel extends JPanel implements MouseListener, MouseMotion
         repaint(); 
     }
 
+    /**
+     * The paintComponent method is used at various points in the project by calling the repaint() method which is defined
+     * in the Component class. This method helps in clearing the graphics and redraws the graphics on the panel.
+     * @param g
+     */
     public void paintComponent(Graphics g)
     {
         super.paintComponent(g);
@@ -32,17 +46,26 @@ public class WorkSpacePanel extends JPanel implements MouseListener, MouseMotion
         {
             p.draw(graphics2);
         }
-        System.out.println("Inside repaint component \n");
         for(Line l:workSpace.lineList) {
         	l.draw(graphics2);
         }
     }
 
+    /**
+     * The method repaintLoadedPoints basically plots all the points which are present in the pointList on the canvas
+     */
     public void repaintLoadedPoints()
     {
         repaint();
     }
 
+    /**
+     * The Load method takes in a file as input and reads the text file using readTextFile method and store the data as String.
+     * Once this is done we split the data into individual lines because we store individual coordinates of the points in
+     * each line. Then we store the coordinates into Point object.
+     * @param file
+     * @throws IOException
+     */
     
     public void load(File file) throws IOException{
 
@@ -59,8 +82,16 @@ public class WorkSpacePanel extends JPanel implements MouseListener, MouseMotion
         repaint();
         
     }
-    
-    private String readTextFile(File file) throws IOException {
+
+    /**
+     * The readTextFile method takes the input as file and using the BufferedReader we read the data from the file. We
+     * also append the new line character after every line for the StringBuilder.
+     * @param file
+     * @return String
+     * @throws IOException
+     */
+    private String readTextFile(File file) throws IOException
+    {
         String lineText;
         StringBuilder fileTextStringBuilder = new StringBuilder();
         BufferedReader br = new BufferedReader(new FileReader(file));
@@ -70,7 +101,13 @@ public class WorkSpacePanel extends JPanel implements MouseListener, MouseMotion
         br.close();
         return fileTextStringBuilder.toString();
     }
-    
+
+    /**
+     * The save method takes the file as input and using the BufferedWriter we write the point coordinates into the file
+     * by iterating over the pointList where we have stored all the points.
+     * @param file
+     * @throws IOException
+     */
     public void save(File file) throws IOException{
 
         BufferedWriter writer = new BufferedWriter(new FileWriter(file.getAbsolutePath()));
@@ -80,19 +117,30 @@ public class WorkSpacePanel extends JPanel implements MouseListener, MouseMotion
         }
         writer.close();
     }
-    
-    
+
+    /**
+     * The setLine method adds the coordinates of the points for which we need to draw the lines for into a list - LineList
+     * It also adds color to the line drawn from the provided input color.
+     * @param ind1
+     * @param ind2
+     * @param color
+     */
     public void setLine(Point ind1,Point ind2, Color color) {
     	int x1=ind1.x;
     	int y1=ind1.y;
     	int x2=ind2.x;
     	int y2=ind2.y;
     	
-    	
     	workSpace.lineList.add(new Line(x1,y1,x2,y2,color));
     }
-    
-    
+
+    /**
+     * The euclideanDist method takes the input of two points and returns the distance value between the two points by using
+     * math operations.
+     * @param ind1
+     * @param ind2
+     * @return It returns the distance value of the two points.
+     */
     public double euclideanDist(Point ind1,Point ind2) {
     	int x1=ind1.x;
     	int y1=ind1.y;
@@ -104,24 +152,30 @@ public class WorkSpacePanel extends JPanel implements MouseListener, MouseMotion
             
         return Math.hypot(ac, cb);
     }
-    
+
+    /**
+     * The Clustering method takes the euclidean distance as input and forms the different clusters with the help of
+     * two data structures. It also makes use of threads to ensure there is a delay between mutliple clusters. It also
+     * picks a random color for the lines.
+     * @param maxEuclidDist
+     */
     public void Clustering(int maxEuclidDist) {
-    	
-    	Thread thread = new Thread(){
-    	    public void run(){
-    	    	int numOfPoints = workSpace.pointList.size();
-    	    	HashSet<Point> hs = new HashSet<>();
-    	    	Queue<Point> queue = new LinkedList<>();
-    	    	for(int i=0;i<numOfPoints;i++)
-    	    		hs.add(workSpace.pointList.get(i));
-    	    	Random rnd = new Random();
-    	    	while(!hs.isEmpty()) {
-    	    		Point p = hs.iterator().next();
-    	    		
-    	    		Color randColor = new Color(rnd.nextInt(256),rnd.nextInt(256),rnd.nextInt(256));
-    	    		hs.remove(p);
-    	    		queue.add(p);
-    	    		while(!queue.isEmpty()) {
+
+                        Thread thread = new Thread(){
+                            public void run(){
+                                int numOfPoints = workSpace.pointList.size();
+                                HashSet<Point> hs = new HashSet<>();
+                                Queue<Point> queue = new LinkedList<>();
+                                for(int i=0;i<numOfPoints;i++)
+                                    hs.add(workSpace.pointList.get(i));
+                                Random rnd = new Random();
+                                while(!hs.isEmpty()) {
+                                    Point p = hs.iterator().next();
+
+                                    Color randColor = new Color(rnd.nextInt(256),rnd.nextInt(256),rnd.nextInt(256));
+                                    hs.remove(p);
+                                    queue.add(p);
+                                    while(!queue.isEmpty()) {
     	    			p = queue.poll();
 	    	    		for(int i=0;i<numOfPoints;i++) {
 	    	    			Point q = workSpace.pointList.get(i);

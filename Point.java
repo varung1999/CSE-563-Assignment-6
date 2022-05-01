@@ -1,6 +1,13 @@
 import java.awt.Color;
 import java.awt.Graphics;
 
+/**
+ * The class Point has the dimension of the point plotted on the canvas along with the color.
+ * @author Pragada Anurag - 1223151007
+ * @author Gollapalli Varun - 1223130805
+ * @author Amulya Bodla - 1219477220
+ * @author Piyush Mudireddy - 1219456537
+ */
 public class Point {
 
     int x, y;
